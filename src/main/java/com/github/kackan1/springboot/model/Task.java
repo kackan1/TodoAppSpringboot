@@ -1,5 +1,6 @@
 package com.github.kackan1.springboot.model;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "tasks")
@@ -7,6 +8,7 @@ public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @NotBlank(message = "Task's description must be not empty")
     private String description;
     private boolean done;
 
