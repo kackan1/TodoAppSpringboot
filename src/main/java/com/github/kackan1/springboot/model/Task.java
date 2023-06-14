@@ -1,22 +1,23 @@
 package com.github.kackan1.springboot.model;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "tasks")
 public class Task {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
     private boolean done;
+
+    Task() {
+    }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(final int id) {
         this.id = id;
     }
 
@@ -24,7 +25,7 @@ public class Task {
         return description;
     }
 
-    public void setDescription(String description) {
+    void setDescription(final String description) {
         this.description = description;
     }
 
@@ -32,9 +33,7 @@ public class Task {
         return done;
     }
 
-    public void setDone(boolean done) {
+    void setDone(final boolean done) {
         this.done = done;
     }
-
-
 }
