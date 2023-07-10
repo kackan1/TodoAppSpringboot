@@ -6,6 +6,5 @@ spring:
     url: 'jdbc:h2:file:./todo-db'
   jpa:
     hibernate:
-      ddl-auto: create-drop
-task.template.allowMultipleTasks: false
+      ddl-auto: validate
 
