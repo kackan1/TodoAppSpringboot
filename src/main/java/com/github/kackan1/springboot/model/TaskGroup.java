@@ -12,6 +12,9 @@ public class TaskGroup extends BaseTask{
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Task> tasks;
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
 
     public TaskGroup() {
     }
@@ -22,5 +25,13 @@ public class TaskGroup extends BaseTask{
 
     void setTasks(final Set<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    Project getProject() {
+        return project;
+    }
+
+    void setProject(final Project project) {
+        this.project = project;
     }
 }
