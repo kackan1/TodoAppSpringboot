@@ -1,5 +1,6 @@
 package com.github.kackan1.springboot.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -11,7 +12,7 @@ public class Project extends BaseProject{
 
     @OneToMany(mappedBy = "project")
     private Set<TaskGroup> groups;
-    @OneToMany(mappedBy = "project")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy= "project")
     private Set<ProjectStep> steps;
 
     Set<TaskGroup> getGroups() {

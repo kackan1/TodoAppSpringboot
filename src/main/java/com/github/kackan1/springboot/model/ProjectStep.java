@@ -12,7 +12,7 @@ public class ProjectStep extends BaseProject{
 
     private int daysToDeadline;
     @ManyToOne
-    @JoinColumn(name = "prject_id")
+    @JoinColumn(name = "project_id")
     private Project project;
 
     public int getDaysToDeadline() {

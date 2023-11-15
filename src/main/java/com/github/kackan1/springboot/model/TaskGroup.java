@@ -19,11 +19,16 @@ public class TaskGroup extends BaseTask{
     public TaskGroup() {
     }
 
+    @Override
+    public void setDescription(final String description) {
+        super.setDescription(description);
+    }
+
     public Set<Task> getTasks() {
         return tasks;
     }
 
-    void setTasks(final Set<Task> tasks) {
+    public void setTasks(final Set<Task> tasks) {
         this.tasks = tasks;
     }
 
