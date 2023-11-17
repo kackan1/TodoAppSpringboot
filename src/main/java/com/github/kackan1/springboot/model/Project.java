@@ -22,4 +22,12 @@ public class Project extends BaseProject{
     void setGroups(final Set<TaskGroup> groups) {
         this.groups = groups;
     }
+
+    public Set<ProjectStep> getSteps() {
+        return steps;
+    }
+
+    void setSteps(final Set<ProjectStep> steps) {
+        this.steps = steps;
+    }
 }
