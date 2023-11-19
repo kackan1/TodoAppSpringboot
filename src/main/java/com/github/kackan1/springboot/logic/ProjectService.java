@@ -5,13 +5,10 @@ import com.github.kackan1.springboot.model.*;
 import com.github.kackan1.springboot.model.projection.GroupReadModel;
 import org.springframework.stereotype.Service;
 
-import javax.naming.ConfigurationException;
 import java.time.LocalDateTime;
-import java.util.IllegalFormatFlagsException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.hibernate.validator.internal.util.Contracts.assertTrue;
 
 @Service
 public class ProjectService {

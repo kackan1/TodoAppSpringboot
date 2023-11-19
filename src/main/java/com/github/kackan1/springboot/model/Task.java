@@ -1,7 +1,6 @@
 package com.github.kackan1.springboot.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 
 @Entity

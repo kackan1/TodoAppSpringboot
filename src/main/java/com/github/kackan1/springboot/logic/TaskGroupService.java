@@ -5,8 +5,6 @@ import com.github.kackan1.springboot.model.TaskGroupRepository;
 import com.github.kackan1.springboot.model.TaskRepository;
 import com.github.kackan1.springboot.model.projection.GroupReadModel;
 import com.github.kackan1.springboot.model.projection.GroupWriteModel;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
