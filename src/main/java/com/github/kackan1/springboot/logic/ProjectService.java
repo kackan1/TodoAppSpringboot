@@ -37,7 +37,7 @@ public class ProjectService {
         if (repository.findById(projectId).isEmpty()){
             throw new IllegalArgumentException("projectId points to non existing Project");
         }
-        var result = repository.findById(projectId)
+        TaskGroup result = repository.findById(projectId)
                 .map(project -> {
                     var targetGroup = new TaskGroup();
                     targetGroup.setDescription(project.getDescription());
