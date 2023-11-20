@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectService {
     private ProjectRepository repository;
-    private TaskGroupRepository groupRepository;
+    private TaskGroupRepository taskGroupRepository;
     private TaskConfigurationProperties config;
 
     ProjectService(final ProjectRepository repository, final TaskGroupRepository groupRepository, final TaskConfigurationProperties config) {
         this.repository = repository;
-        this.groupRepository = groupRepository;
+        this.taskGroupRepository = groupRepository;
         this.config = config;
     }
 
@@ -31,11 +31,8 @@ public class ProjectService {
     }
 
     public GroupReadModel createGroup(int projectId, LocalDateTime deadline){
-        if (!config.getTemplate().isAllowMultipleTasks() && groupRepository.existsByDoneIsFalseAndProject_Id(projectId)){
+        if (!config.getTemplate().isAllowMultipleTasks() && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)){
             throw new IllegalStateException("Only one undone group from project is allowed");
-        }
-        if (repository.findById(projectId).isEmpty()){
-            throw new IllegalArgumentException("projectId points to non existing Project");
         }
         TaskGroup result = repository.findById(projectId)
                 .map(project -> {
@@ -48,7 +45,8 @@ public class ProjectService {
                                             deadline.plusDays(projectStep.getDaysToDeadline())
                                     )).collect(Collectors.toSet())
                     );
-                    return targetGroup;
+                    targetGroup.setProject(project);
+                    return taskGroupRepository.save(targetGroup);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return new GroupReadModel(result);
     }

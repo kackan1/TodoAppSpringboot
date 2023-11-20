@@ -29,11 +29,11 @@ public class TaskGroup extends BaseTask {
         this.tasks = tasks;
     }
 
-    Project getProject() {
+    public Project getProject() {
         return project;
     }
 
-    void setProject(final Project project) {
+    public void setProject(final Project project) {
         this.project = project;
     }
 }
