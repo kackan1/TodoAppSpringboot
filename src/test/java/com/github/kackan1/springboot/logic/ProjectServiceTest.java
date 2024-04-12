@@ -27,7 +27,7 @@ public class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationPropertiesReturning(false);
         // system under test
-        var toTest = new ProjectService(null, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(null, mockGroupRepository, mockConfig, null);
         // when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         // then
@@ -44,7 +44,7 @@ public class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationPropertiesReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, null, mockConfig);
+        var toTest = new ProjectService(mockRepository, null, mockConfig, null);
         // when 
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         // then
@@ -64,7 +64,7 @@ public class ProjectServiceTest {
         // and
         TaskConfigurationProperties mockConfig = configurationPropertiesReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, mockGroupRepository, mockConfig, null);
         // when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         // then
@@ -85,11 +85,12 @@ public class ProjectServiceTest {
                 .thenReturn(Optional.of(project));
         // and
         InMemoryGroupRepository inMemoryGroupRepository = inMemoryGroupRepository();
+        var serviceWithInMemRepo = new TaskGroupService(inMemoryGroupRepository, null);
         int countBeforeCall = inMemoryGroupRepository.count();
         // and
         TaskConfigurationProperties mockConfig = configurationPropertiesReturning(true);
         // system under test
-        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig);
+        var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, serviceWithInMemRepo);
 
 
         // when
