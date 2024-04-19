@@ -18,15 +18,15 @@ public class ProjectStep extends BaseProject{
         return daysToDeadline;
     }
 
-    void setDaysToDeadline(final int daysToDeadline) {
+    public void setDaysToDeadline(final int daysToDeadline) {
         this.daysToDeadline = daysToDeadline;
     }
 
-    Project getProject() {
+    public Project getProject() {
         return project;
     }
 
-    void setProject(final Project project) {
+    public void setProject(final Project project) {
         this.project = project;
     }
 }

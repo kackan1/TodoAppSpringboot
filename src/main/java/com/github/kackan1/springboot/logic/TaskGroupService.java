@@ -1,5 +1,6 @@
 package com.github.kackan1.springboot.logic;
 
+import com.github.kackan1.springboot.model.Project;
 import com.github.kackan1.springboot.model.TaskGroup;
 import com.github.kackan1.springboot.model.TaskGroupRepository;
 import com.github.kackan1.springboot.model.TaskRepository;
@@ -21,8 +22,12 @@ public class TaskGroupService {
     }
 
     public GroupReadModel createGroup(GroupWriteModel source){
-        TaskGroup result = repository.save(source.toGroup());
-        return new GroupReadModel(result);
+        return createGroup(source, null);
+    }
+
+    public GroupReadModel createGroup(GroupWriteModel source, Project project) {
+        TaskGroup result = repository.save(source.toGroup(project));
+        return createGroup(source, project);
     }
 
     public List<GroupReadModel> readAll(){
@@ -40,6 +45,7 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
+
 
 }
 
