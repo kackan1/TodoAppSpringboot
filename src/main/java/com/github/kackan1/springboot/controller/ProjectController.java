@@ -1,12 +1,18 @@
 package com.github.kackan1.springboot.controller;
 
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.github.kackan1.springboot.logic.ProjectService;
+import com.github.kackan1.springboot.model.Project;
 import com.github.kackan1.springboot.model.ProjectStep;
 import com.github.kackan1.springboot.model.projection.ProjectWriteModel;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +33,13 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public String addProject(@ModelAttribute("project") ProjectWriteModel current, Model model) {
+    public String addProject(
+            @ModelAttribute("project") @Valid ProjectWriteModel current,
+            BindingResult bindingResult,
+            Model model) {
+        if (bindingResult.hasErrors()) {
+            return "projects";
+        }
         service.save(current);
         model.addAttribute("project", new ProjectWriteModel());
         model.addAttribute("message", "Dodano projekt!");
@@ -40,4 +52,8 @@ public class ProjectController {
         return "projects";
     }
 
+    @ModelAttribute("projects")
+    List<Project> getProjects() {
+        return service.readAll();
+    }
 }
