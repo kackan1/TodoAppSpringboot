@@ -20,7 +20,7 @@ public class TestConfiguration {
     @Bean
     @Primary
     @Profile("!integration")
-    DataSource e2eTestDataSource(){
+    DataSource e2eTestDataSource() {
         var result = new DriverManagerDataSource("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", "sa", "");
         result.setDriverClassName("org.h2.Driver");
         return result;
@@ -29,8 +29,8 @@ public class TestConfiguration {
     @Bean
     @Primary
     @Profile("integration")
-    TaskRepository testRepo(){
-        return new TaskRepository(){
+    TaskRepository testRepo() {
+        return new TaskRepository() {
             private Map<Integer, Task> tasks = new HashMap<>();
 
             @Override
@@ -60,7 +60,7 @@ public class TestConfiguration {
 
             @Override
             public Task save(Task entity) {
-                int key = tasks.size()+1;
+                int key = tasks.size() + 1;
                 Field field = null;
                 try {
                     field = Task.class.getSuperclass().getDeclaredField("id");
@@ -76,6 +76,12 @@ public class TestConfiguration {
             @Override
             public List<Task> findByDone(boolean done) {
                 return null;
+            }
+
+            @Override
+            public List<Task> findAllByGroup_Id(Integer groupid) {
+                // TODO Auto-generated method stub
+                throw new UnsupportedOperationException("Unimplemented method 'findAllByGroup_Id'");
             }
         };
     }

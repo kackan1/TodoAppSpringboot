@@ -15,11 +15,11 @@ public class Project extends BaseProject{
     @OneToMany(cascade = CascadeType.ALL, mappedBy= "project")
     private Set<ProjectStep> steps;
 
-    Set<TaskGroup> getGroups() {
+    public Set<TaskGroup> getGroups() {
         return groups;
     }
 
-    void setGroups(final Set<TaskGroup> groups) {
+    public void setGroups(final Set<TaskGroup> groups) {
         this.groups = groups;
     }
 
@@ -27,7 +27,7 @@ public class Project extends BaseProject{
         return steps;
     }
 
-    void setSteps(final Set<ProjectStep> steps) {
+    public void setSteps(final Set<ProjectStep> steps) {
         this.steps = steps;
     }
 }

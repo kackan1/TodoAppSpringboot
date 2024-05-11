@@ -5,6 +5,7 @@ import com.github.kackan1.springboot.model.*;
 import com.github.kackan1.springboot.model.projection.GroupReadModel;
 import com.github.kackan1.springboot.model.projection.GroupTaskWriteModel;
 import com.github.kackan1.springboot.model.projection.GroupWriteModel;
+import com.github.kackan1.springboot.model.projection.ProjectWriteModel;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -30,8 +31,8 @@ public class ProjectService {
         return repository.findAll();
     }
 
-    public Project save(final Project project){
-        return repository.save(project);
+    public Project save(final ProjectWriteModel project){
+        return repository.save(project.toProject());
     }
 
     public GroupReadModel createGroup(int projectId, LocalDateTime deadline){
@@ -49,9 +50,9 @@ public class ProjectService {
                                         task.setDescription(projectStep.getDescription());
                                         task.setDeadline(deadline.plusDays(projectStep.getDaysToDeadline()));
                                         return task;
-                                    }).collect(Collectors.toSet())
+                                    }).collect(Collectors.toList())
                     );
-                    return service.createGroup(targetGroup);
+                    return service.createGroup(targetGroup, project);
                 }).orElseThrow(() -> new IllegalArgumentException("Project with given id not found"));
         return result;
     }

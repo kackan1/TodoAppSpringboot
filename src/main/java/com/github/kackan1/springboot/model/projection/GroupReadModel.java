@@ -3,27 +3,44 @@ package com.github.kackan1.springboot.model.projection;
 import com.github.kackan1.springboot.model.Task;
 import com.github.kackan1.springboot.model.TaskGroup;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
+    private int id;
+    @NotBlank
     private String description;
     /**
     * Deadline from the latest task in group.
     */
     private LocalDateTime deadline;
-    private Set<GroupTaskReadModel> tasks;
+    @Valid
+    private List<GroupTaskReadModel> tasks;
 
     public GroupReadModel(TaskGroup source) {
+        id = source.getId();
         description = source.getDescription();
         source.getTasks().stream()
                 .map(Task::getDeadline)
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> deadline = date);
         tasks = source.getTasks().stream()
                 .map(GroupTaskReadModel::new)
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -42,11 +59,11 @@ public class GroupReadModel {
         this.deadline = deadline;
     }
 
-    public Set<GroupTaskReadModel> getTasks() {
+    public List<GroupTaskReadModel> getTasks() {
         return tasks;
     }
 
-    public void setTasks(final Set<GroupTaskReadModel> tasks) {
+    public void setTasks(final List<GroupTaskReadModel> tasks) {
         this.tasks = tasks;
     }
 }
