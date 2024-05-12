@@ -19,6 +19,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
+@IllegalExceptionProcessing
 @RequestMapping(value = "/groups")
 public class TaskGroupController {
     private final TaskGroupService service;

@@ -18,6 +18,9 @@ import com.github.kackan1.springboot.logic.ProjectService;
 import com.github.kackan1.springboot.model.Project;
 import com.github.kackan1.springboot.model.ProjectStep;
 import com.github.kackan1.springboot.model.projection.ProjectWriteModel;
+
+import io.micrometer.core.annotation.Timed;
+
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
@@ -56,6 +59,16 @@ public class ProjectController {
         return "projects";
     }
 
+    @PostMapping("fake/{id}")
+    public String createGroupFake(
+            @ModelAttribute("project") ProjectWriteModel current,
+            Model model,
+            @PathVariable int id,
+            @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime deadline) {
+        return createGroup(current, model, id, deadline);
+    }
+
+    @Timed(value = "project.create.group", histogram = true, percentiles = { 0.5, 0.95, 0.99 })
     @PostMapping("/{id}")
     public String createGroup(
             @ModelAttribute("project") ProjectWriteModel current,
