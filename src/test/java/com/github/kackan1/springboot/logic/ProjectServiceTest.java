@@ -35,6 +35,7 @@ public class ProjectServiceTest {
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("one undone group");
     }
+
     @Test
     @DisplayName("Should throw IllegalArgumentException when configuration ok and no project for given id")
     void createGroup_configurationOk_And_noProjects_throwsIllegalArgumentException() {
@@ -45,12 +46,12 @@ public class ProjectServiceTest {
         TaskConfigurationProperties mockConfig = configurationPropertiesReturning(true);
         // system under test
         var toTest = new ProjectService(mockRepository, null, mockConfig, null);
-        // when 
+        // when
         var exception = catchThrowable(() -> toTest.createGroup(0, LocalDateTime.now()));
         // then
         assertThat(exception)
-            .isInstanceOf(IllegalArgumentException.class)
-            .hasMessageContaining("id not found");
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessageContaining("id not found");
     }
 
     @Test
@@ -75,7 +76,7 @@ public class ProjectServiceTest {
 
     @Test
     @DisplayName("Should create a new group from project")
-    void createGroup_configurationOk_existingProject_createsAndSavesGroup(){
+    void createGroup_configurationOk_existingProject_createsAndSavesGroup() {
         // given
         var today = LocalDate.now().atStartOfDay();
         // and
@@ -92,7 +93,6 @@ public class ProjectServiceTest {
         // system under test
         var toTest = new ProjectService(mockRepository, inMemoryGroupRepository, mockConfig, serviceWithInMemRepo);
 
-
         // when
         GroupReadModel result = toTest.createGroup(1, today);
 
@@ -103,8 +103,7 @@ public class ProjectServiceTest {
         assertThat(countBeforeCall + 1).isEqualTo(inMemoryGroupRepository.count());
     }
 
-
-    private Project projectWith(String projectDescription, Set<Integer> daysToDeadline){
+    private Project projectWith(String projectDescription, Set<Integer> daysToDeadline) {
         var result = mock(Project.class);
         var steps = daysToDeadline.stream()
                 .map(days -> {
@@ -118,26 +117,30 @@ public class ProjectServiceTest {
         when(result.getSteps()).thenReturn(steps);
         return result;
     }
-    private TaskGroupRepository groupRepositoryReturning(final boolean result){
+
+    private TaskGroupRepository groupRepositoryReturning(final boolean result) {
         var mockGroupRepository = mock(TaskGroupRepository.class);
         when(mockGroupRepository.existsByDoneIsFalseAndProject_Id(anyInt())).thenReturn(result);
         return mockGroupRepository;
     }
-    private TaskConfigurationProperties configurationPropertiesReturning(final boolean result){
+
+    private TaskConfigurationProperties configurationPropertiesReturning(final boolean result) {
         var mockTemplate = mock(TaskConfigurationProperties.Template.class);
         when(mockTemplate.isAllowMultipleTasks()).thenReturn(result);
         var mockConfig = mock(TaskConfigurationProperties.class);
         when(mockConfig.getTemplate()).thenReturn(mockTemplate);
         return mockConfig;
     }
-    private InMemoryGroupRepository inMemoryGroupRepository(){
+
+    private InMemoryGroupRepository inMemoryGroupRepository() {
         return new InMemoryGroupRepository();
     }
+
     private static class InMemoryGroupRepository implements TaskGroupRepository {
         private int index = 0;
         private final Map<Integer, TaskGroup> map = new HashMap<>();
 
-        public int count(){
+        public int count() {
             return map.values().size();
         }
 
@@ -153,7 +156,7 @@ public class ProjectServiceTest {
 
         @Override
         public TaskGroup save(TaskGroup entity) {
-            if (entity.getId() == 0){
+            if (entity.getId() == 0) {
                 try {
                     var field = TaskGroup.class.getSuperclass().getDeclaredField("id");
                     field.setAccessible(true);
@@ -171,6 +174,12 @@ public class ProjectServiceTest {
             return map.values().stream()
                     .filter(group -> !group.isDone())
                     .anyMatch(group -> group.getProject() != null && group.getProject().getId() == projectId);
+        }
+
+        @Override
+        public boolean existsByDescription(String description) {
+            return map.values().stream()
+                    .anyMatch(group -> group.getDescription().equals(description));
         }
     }
 }

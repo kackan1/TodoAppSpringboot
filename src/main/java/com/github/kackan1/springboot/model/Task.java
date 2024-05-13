@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
-public class Task extends BaseTask{
+public class Task extends BaseTask {
 
     private LocalDateTime deadline;
     @ManyToOne
@@ -15,7 +15,7 @@ public class Task extends BaseTask{
     Task() {
     }
 
-     public Task(String description ,LocalDateTime deadline) {
+    public Task(String description, LocalDateTime deadline) {
         this.setDescription(description);
         this.deadline = deadline;
     }
@@ -23,7 +23,7 @@ public class Task extends BaseTask{
     public Task(String description, LocalDateTime deadline, TaskGroup group) {
         this.setDescription(description);
         this.setDeadline(deadline);
-        if (group != null ){
+        if (group != null) {
             this.setGroup(group);
         }
     }
@@ -50,7 +50,5 @@ public class Task extends BaseTask{
         deadline = source.deadline;
         group = source.group;
     }
-
-
 
 }
