@@ -1,6 +1,9 @@
 package com.github.kackan1.springboot.model;
 
 import javax.persistence.*;
+
+import com.github.kackan1.springboot.model.event.TaskEvent;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,6 +29,11 @@ public class Task extends BaseTask {
         if (group != null) {
             this.setGroup(group);
         }
+    }
+
+    public TaskEvent toggle() {
+        this.setDone(!this.isDone());
+        return TaskEvent.changed(this);
     }
 
     public LocalDateTime getDeadline() {
