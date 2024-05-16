@@ -22,12 +22,36 @@ public class ReportController {
         this.eventRepository = eventRepository;
     }
 
+    @GetMapping("/doneBeforeDeadline/{id}")
+    public ResponseEntity<TaskWithDoneBeforeDeadline> readTaskWithDoneBeforeDeadline(@PathVariable int id) {
+        return taskRepository.findById(id)
+                .map(task -> new TaskWithDoneBeforeDeadline(task, eventRepository.findByTaskId(id)))
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @GetMapping("/count/{id}")
     public ResponseEntity<TaskWithChangesCount> readTaskWithCount(@PathVariable int id) {
         return taskRepository.findById(id)
                 .map(task -> new TaskWithChangesCount(task, eventRepository.findByTaskId(id)))
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    private static class TaskWithDoneBeforeDeadline {
+        public String description;
+        public boolean done;
+        public boolean isDoneBeforeDeadline;
+
+        private TaskWithDoneBeforeDeadline(final Task task, List<PersistedTaskEvent> event) {
+            description = task.getDescription();
+            done = task.isDone();
+            if (done) {
+                isDoneBeforeDeadline = event.get(event.size() - 1).occurence.isBefore(task.getDeadline());
+            } else {
+                isDoneBeforeDeadline = false;
+            }
+        }
     }
 
     private static class TaskWithChangesCount {
